@@ -11,6 +11,7 @@ Stepper myStepper(stepsPerRevolution, 8, 9, 10, 11);
 // MPU6050 accelerometer; // TODO accelerometer
 
 int servoPin = 3;
+int counterX = 0;
 Servo servo;
 // ServoEasing base_rotation, base_lift, middle_lift, grip;  //  TODO Create 4 servos for each joint
 
@@ -21,7 +22,7 @@ void setup() {
   Serial.begin(9600);
   Serial.println("Initialize sketch");
 
-  accelerometer.initialize(); // Initialize accelerometer
+//  accelerometer.initialize(); // Initialize accelerometer
 
   servo.attach(servoPin);
 
@@ -43,18 +44,23 @@ void loop() {
   float Y = analogRead(pinY);
   Serial.print(Y); // inspect the `Y` value
 
-  if (Y > 600) {
-    myStepper.step(128);
+  if (Y > 650) {
+    myStepper.step(32);
   }
-  if (Y < 400) {
-    myStepper.step(-128);
+  else if (Y < 350) {
+    myStepper.step(-32);
+  }
+  if (X > 650 && movementX < 180  ) {
+    servo.write(++counterX);
+  }
+  else if (X < 350 && movementX > -180 ) {
+    servo.write(--counterX);
   }
 
   movementX = (float) (X/1024*180);
 
-  servo.write(movementX);
+  
 
   // TODO remove tests for deploy
-  delay(100);
   //  Serial.println(accelerometer.testConnection());
 }
