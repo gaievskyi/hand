@@ -1,5 +1,5 @@
 #include <Servo.h>
-// #include <ServoEasing.h> // TODO set up the easing lib
+#include "ServoEasing.h"
 #include <Stepper.h>
 
 #define pinX A2
@@ -8,17 +8,17 @@
 const int stepsPerRevolution = 200;
 Stepper myStepper(stepsPerRevolution, 8, 9, 10, 11);
 
-int servoPin1 = 1;
+int servoPin1 = 4;
 int servoPin2 = 2;
 int servoPin3 = 3;
-float incline = 0;
-Servo servo1;
-Servo servo2;
+float incline ;
+ServoEasing servo1;
+ServoEasing servo2;
 Servo servo3;
 
 float movementX;
 
-void changeIncline(Servo engine) {
+void changeIncline(ServoEasing engine) {
   float incline = engine.read();
   
   if (digitalRead(7) == 0 && incline < 180) {
@@ -65,4 +65,4 @@ void loop() {
   } else if (Y < 350) {
     myStepper.step(-32);
   }
-}x
+}
